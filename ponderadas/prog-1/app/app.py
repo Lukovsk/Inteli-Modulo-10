@@ -1,8 +1,16 @@
 from flask import Flask
 from db.db import db
 from flask import render_template
-from routes import user_app
+from flask_swagger_ui import get_swaggerui_blueprint
+from routes import user_app, todo_app
 from flask_jwt_extended import jwt_required, JWTManager
+
+SWAGGER_URL = "/api"
+API_URL = "/api.json"
+
+swagger_ui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL, API_URL, config={"app_name": "Access API"}
+)
 
 
 app = Flask(__name__, template_folder="templates")
@@ -23,7 +31,16 @@ if len(sys.argv) > 1 and sys.argv[1] == "create_db":
     print("Database created successfully")
     sys.exit(0)
 
+app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 app.register_blueprint(user_app)
+app.register_blueprint(todo_app)
+
+
+@app.route("/api.json")
+def swagger():
+    with open("api.json") as f:
+        data = f.read()
+    return data
 
 
 @app.route("/")

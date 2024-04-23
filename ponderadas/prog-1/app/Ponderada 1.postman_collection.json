@@ -1,0 +1,344 @@
+{
+  "info": {
+    "_postman_id": "3df6f1aa-aa50-4391-b4c5-25783f594998",
+    "name": "Ponderada 1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "20645267"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "user",
+          "item": [
+            {
+              "name": "users",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/users/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "users", ""]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "user by id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/users/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "users", "1"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "create",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"teste@teste.com\",\r\n    \"name\": \"teste\",\r\n    \"password\": \"test\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/users/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "users", ""]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get token",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"teste@teste.com\",\r\n    \"password\": \"test\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/users/token",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "users", "token"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "login",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "email",
+                      "value": "teste@teste.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "test",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/users/login",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "users", "login"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update by id",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"teste@teste.com\",\r\n    \"name\": \"teste\",\r\n    \"password\": \"test2\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/users/3",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "users", "3"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete by id",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/users/3",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "users", "3"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "todo",
+          "item": [
+            {
+              "name": "all todos",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/todo/all",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "todo", "all"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "todo by user id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/todo/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "todo", "1"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "create todo",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"title\": \"Teste\",\r\n    \"content\": \"Tarefa teste\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/todo/3",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "todo", "3"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update todo",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"title\": \"Teste\",\r\n    \"content\": \"Tarefa teste2\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/todo/4",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "todo", "4"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "check todo",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"title\": \"Teste\",\r\n    \"content\": \"Tarefa teste2\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/todo/check/4",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "todo", "check", "4"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete todo",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"title\": \"Teste\",\r\n    \"content\": \"Tarefa teste2\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/todo/3",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "todo", "3"]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "pages",
+      "item": [
+        {
+          "name": "login",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": ["{{base_url}}"],
+              "path": ["login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "register",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/register",
+              "host": ["{{base_url}}"],
+              "path": ["register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "content",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/content",
+              "host": ["{{base_url}}"],
+              "path": ["content"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "error",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/error",
+              "host": ["{{base_url}}"],
+              "path": ["error"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:5000"
+    }
+  ]
+}

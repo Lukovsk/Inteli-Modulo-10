@@ -29,6 +29,8 @@ def login():
     password = request.form.get("password", None)
 
     if email is None or password is None:
+        print("Email and password is required")
+        print(email, password)
         return render_template("error.html", message="Bad email or password")
 
     token_data = http_request.post(
@@ -36,6 +38,7 @@ def login():
         json={"email": email, "password": password},
     )
     if token_data.status_code != 200:
+        print("status code: " + str(token_data.status_code))
         return render_template("error.html", message="Something went wrong")
     response = make_response(render_template("content.html"))
     set_access_cookies(response, token_data.json()["token"])
