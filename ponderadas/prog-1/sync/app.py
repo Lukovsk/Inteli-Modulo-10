@@ -5,7 +5,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from routes import user_app, todo_app
 from flask_jwt_extended import jwt_required, JWTManager
 
-SWAGGER_URL = "/api"
+SWAGGER_URL = "/api/docs"
 API_URL = "/api.json"
 
 swagger_ui_blueprint = get_swaggerui_blueprint(
