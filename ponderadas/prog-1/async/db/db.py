@@ -2,8 +2,8 @@ import databases
 import ormar
 import sqlalchemy
 
-database = databases.Database("postgresql://lukovsk:3569@db:5432/postgres")
-# database = databases.Database("sqlite:///games.db")
+# database = databases.Database("postgresql://lukovsk:3569@db:5432/postgres")
+database = databases.Database("sqlite:///db.db")
 metadata = sqlalchemy.MetaData()
 
 
@@ -22,9 +22,9 @@ class User(ormar.Model):
     password: str = ormar.String(max_length=16, nullable=False)
 
 
-class Task(ormar.Model):
+class Todo(ormar.Model):
     class Meta(BaseMeta):
-        tablename = "tasks"
+        tablename = "todos"
 
     id: int = ormar.Integer(primary_key=True)
     title: str = ormar.String(max_length=128, nullable=False)
@@ -32,7 +32,7 @@ class Task(ormar.Model):
     user_id: int = ormar.Integer()
 
 
-# engine = sqlalchemy.create_engine("sqlite:///games.db")
-engine = sqlalchemy.create_engine(settings.db_url)
+engine = sqlalchemy.create_engine("sqlite:///db.db")
+# engine = sqlalchemy.create_engine(settings.db_url)
 # metadata.drop_all(engine)
 metadata.create_all(engine)
