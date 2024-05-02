@@ -15,8 +15,6 @@ services:
   flask_app:
     image: python:3.8-alpine
     container_name: flask_o_velho
-    volumes:
-      - ./:/
     ports:
       - 5000:5000
     depends_on:
@@ -32,8 +30,6 @@ services:
   fastapi_app:
     image: python:3.8-alpine
     container_name: fastapi_o_grande
-    volumes:
-      - ./:/fastapi_app
     ports:
       - 8000:8000
     depends_on:

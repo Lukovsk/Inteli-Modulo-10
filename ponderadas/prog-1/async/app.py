@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from routes import user_app, todo_app
-from db.db import db, User, Todo
+from db.db import database, User, Todo
 import uvicorn
 
 app = FastAPI()

@@ -2,7 +2,7 @@ import databases
 import ormar
 import sqlalchemy
 
-# database = databases.Database("postgresql://lukovsk:3569@db:5432/postgres")
+# database = databases.Database("postgresql://lukovsk:3569@db:5432/postgres")   
 database = databases.Database("sqlite:///db.db")
 metadata = sqlalchemy.MetaData()
 
