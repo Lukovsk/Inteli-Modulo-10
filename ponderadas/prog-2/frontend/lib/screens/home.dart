@@ -1,6 +1,7 @@
-// ignore_for_file: unused_element
+// ignore_for_file: unused_element, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
+import 'package:frontend/api/todo.dart';
 import '../constants/colors.dart';
 import '../model/todo.dart';
 import '../widgets/todo_item.dart';
@@ -13,14 +14,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final todosList = ToDo.todoList();
+  List<ToDo> todosList = [];
   List<ToDo> _foundTodo = [];
   final _todoController = TextEditingController();
 
   @override
   void initState() {
-    _foundTodo = todosList;
     super.initState();
+    fetchTodos();
+    _foundTodo = todosList;
   }
 
   @override
@@ -80,25 +82,55 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _handleTodoChange(ToDo todo) {
+  void _handleTodoChange(ToDo todo) async {
+    if (await checkTodo(todo.id)) {
+      fetchTodos();
+    } else {
+      fetchTodos();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Erro em atualizar tarefa!'),
+        ),
+      );
+    }
+  }
+
+  void _handleDeleteTodo(int id) async {
+    if (await removeTodo(id)) {
+      fetchTodos();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Erro em remover tarefa!'),
+        ),
+      );
+    }
+  }
+
+  void fetchTodos() async {
+    final todos = await getTodos();
     setState(() {
-      todo.check = !todo.check;
+      todosList = todos;
+      _foundTodo = todos;
     });
   }
 
-  void _handleDeleteTodo(int id) {
-    setState(() {
-      todosList.removeWhere((element) => element.id == id);
-    });
-  }
-
-  void _addTodoItem(String todo) {
-    setState(() {
-      todosList.add(ToDo(
-          id: (todosList.isNotEmpty ? todosList.last.id + 1 : 0),
-          todoText: todo));
-    });
-    _todoController.clear();
+  void _addTodoItem(String todo) async {
+    if (await addTodo(todo)) {
+      fetchTodos();
+      _todoController.clear();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Tarefa registrada com sucesso!'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Erro em registrar tarefa!'),
+        ),
+      );
+    }
   }
 
   void _runFilter(String enteredKeyword) {

@@ -9,6 +9,14 @@ class ToDo {
     this.check = false,
   });
 
+  factory ToDo.fromJson(Map<String, dynamic> json) {
+    return ToDo(
+      id: json["id"],
+      todoText: json["content"],
+      check: json["check"],
+    );
+  }
+
   static List<ToDo> todoList() {
     return [
       ToDo(id: 0, todoText: "Hi 1", check: true),

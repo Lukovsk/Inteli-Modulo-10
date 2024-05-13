@@ -1,11 +1,17 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/home.dart';
+import '../components/login_text_field.dart';
+import '../components/sign_in_button.dart';
+import '../components/square_tile.dart';
 import '../constants/colors.dart';
+import "../api/login.dart";
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
@@ -36,10 +42,10 @@ class LoginPage extends StatelessWidget {
 
                 const SizedBox(height: 25),
 
-                // username
+                // email
                 LoginTextField(
-                  controller: usernameController,
-                  hintText: "Username",
+                  controller: emailController,
+                  hintText: "Email",
                   obscureText: false,
                 ),
 
@@ -53,16 +59,21 @@ class LoginPage extends StatelessWidget {
 
                 const SizedBox(height: 10),
                 // forgot password
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        "Esqueceu a senha?",
-                        style: TextStyle(color: tdGrey),
-                      ),
-                    ],
+                GestureDetector(
+                  onTap: () {
+                    _registerUser(context);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "Esqueceu a senha?",
+                          style: TextStyle(color: tdGrey),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
@@ -133,96 +144,81 @@ class LoginPage extends StatelessWidget {
         ));
   }
 
-  void signUserIn(context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-  }
-}
-
-class SquareTile extends StatelessWidget {
-  final String imageUrl;
-
-  const SquareTile({super.key, required this.imageUrl});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white),
-      child: Image.network(
-        imageUrl,
-        height: 72,
-      ),
-    );
-  }
-}
-
-class SignInButton extends StatelessWidget {
-  final Function()? onTap;
-
-  const SignInButton({super.key, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: tdBlack,
-          borderRadius: BorderRadius.circular(8),
+  void signUserIn(context) async {
+    if (await login(emailController.text, passwordController.text)) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Falha no login!'),
         ),
-        padding: const EdgeInsets.all(25),
-        margin: const EdgeInsets.symmetric(horizontal: 25),
-        child: const Center(
-          child: Text(
-            "Sign In",
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+      );
+    }
+  }
+
+  void signUserUp(context, String name, String email, String password) async {
+    if (await signUp(name, email, password)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Usuário registrado com sucesso!'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Falha no registro!'),
+        ),
+      );
+    }
+  }
+
+  void _registerUser(mainContext) {
+    showDialog(
+      context: mainContext,
+      builder: (context) {
+        String name = '';
+        String email = '';
+        String password = '';
+
+        return AlertDialog(
+          title: const Text('Registrar-se'),
+          content: Container(
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  decoration: InputDecoration(labelText: 'Nome'),
+                  onChanged: (value) {
+                    name = value;
+                  },
+                ),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Email'),
+                  onChanged: (value) {
+                    email = value;
+                  },
+                ),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Senha'),
+                  onChanged: (value) {
+                    password = value;
+                  },
+                ),
+              ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class LoginTextField extends StatelessWidget {
-  final controller;
-  final String hintText;
-  final bool obscureText;
-
-  const LoginTextField({
-    super.key,
-    required this.controller,
-    required this.hintText,
-    required this.obscureText,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 25,
-      ),
-      child: TextField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-            enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: tdBlack),
+          actions: [
+            TextButton(
+              onPressed: () {
+                signUserUp(mainContext, name, email, password);
+                Navigator.pop(context);
+              },
+              child: const Text('Sign Up'),
             ),
-            focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: tdBlue),
-            ),
-            fillColor: Colors.white,
-            filled: true,
-            hintText: hintText,
-            hintStyle: TextStyle(color: Colors.grey[500])),
-      ),
+          ],
+        );
+      },
     );
   }
 }
