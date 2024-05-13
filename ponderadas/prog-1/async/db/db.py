@@ -28,6 +28,7 @@ class Todo(ormar.Model):
 
     id: int = ormar.Integer(primary_key=True)
     content: str = ormar.String(max_length=1024, nullable=False)
+    check: bool = ormar.Boolean(default=False)
     user_id: int = ormar.Integer()
 
 

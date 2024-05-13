@@ -40,8 +40,21 @@ async def create_task(todo: TaskSchema = Body(default=None)):
     if not database.is_connected:
         await database.connect()
 
-    await Todo.objects.create(content=todo.content, user_id=todo.user_id)
+    await Todo.objects.create(content=todo.content, user_id=todo.user_id, check=False)
     return {"success": "Successfully created"}
+
+
+@app.put("/check/{id}", dependencies=[Depends(jwtBearer())])
+async def check_todo(id: int):
+    if not database.is_connected:
+        await database.connect()
+
+    todo = await Todo.objects.get(id=id)
+
+    return await Todo.objects.update_or_create(
+        id=todo.id,
+        check=not todo.check,
+    )
 
 
 @app.put("/", dependencies=[Depends(jwtBearer())])
@@ -53,6 +66,7 @@ async def update_task(new_task: TaskSchema):
         id=new_task.id,
         content=new_task.content,
         user_id=new_task.user_id,
+        check=new_task.check,
     )
 
 
