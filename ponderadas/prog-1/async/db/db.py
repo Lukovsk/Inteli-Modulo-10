@@ -2,7 +2,7 @@ import databases
 import ormar
 import sqlalchemy
 
-# database = databases.Database("postgresql://lukovsk:3569@db:5432/postgres")   
+# database = databases.Database("postgresql://lukovsk:3569@db:5432/postgres")
 database = databases.Database("sqlite:///db.db")
 metadata = sqlalchemy.MetaData()
 
@@ -27,7 +27,6 @@ class Todo(ormar.Model):
         tablename = "todos"
 
     id: int = ormar.Integer(primary_key=True)
-    title: str = ormar.String(max_length=128, nullable=False)
     content: str = ormar.String(max_length=1024, nullable=False)
     user_id: int = ormar.Integer()
 

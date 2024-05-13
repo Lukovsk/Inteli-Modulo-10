@@ -17,7 +17,7 @@ async def read_tasks():
 
 
 # retur todo by id
-@app.get("/id:{id}", tags=["todo"])
+@app.get("/id:{id}")
 async def get_task_by_id(id: int):
     if not database.is_connected:
         await database.connect()
@@ -26,7 +26,7 @@ async def get_task_by_id(id: int):
 
 
 # return all todos by a user id
-@app.get("/user:{user_id}", tags=["todo"])
+@app.get("/user:{user_id}")
 async def get_task_by_id(user_id: int):
     if not database.is_connected:
         await database.connect()
@@ -35,14 +35,12 @@ async def get_task_by_id(user_id: int):
 
 
 # create a todo
-@app.post("/", dependencies=[Depends(jwtBearer())], tags=["todo"])
+@app.post("/", dependencies=[Depends(jwtBearer())])
 async def create_task(todo: TaskSchema = Body(default=None)):
     if not database.is_connected:
         await database.connect()
 
-    await Todo.objects.create(
-        title=todo.title, content=todo.content, user_id=todo.user_id
-    )
+    await Todo.objects.create(content=todo.content, user_id=todo.user_id)
     return {"success": "Successfully created"}
 
 
@@ -53,7 +51,6 @@ async def update_task(new_task: TaskSchema):
 
     return await Todo.objects.update_or_create(
         id=new_task.id,
-        title=new_task.title,
         content=new_task.content,
         user_id=new_task.user_id,
     )
