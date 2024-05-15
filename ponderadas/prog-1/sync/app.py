@@ -14,7 +14,7 @@ swagger_ui_blueprint = get_swaggerui_blueprint(
 
 
 app = Flask(__name__, template_folder="templates")
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://lukovsk:3569@db:5432/postgres"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.db"
 db.init_app(app)
 app.config["JWT_SECRET_KEY"] = "goku-vs-vegeta"
 app.config["JWT_TOKEN_LOCATION"] = ["cookies"]

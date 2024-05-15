@@ -13,11 +13,34 @@ services:
       POSTGRES_PASSWORD: 3569
 
   flask_app:
-    build: .
-    ports: 
+    image: python:3.8-alpine
+    container_name: flask_o_velho
+    ports:
       - 5000:5000
     depends_on:
       - db
+    command: sh -c
+            "
+            cd /sync &&
+            python3 -m pip install -r requirements.txt &&
+            python3 sync/app.py create_db &&
+            python3 sync/app.py
+            "
+
+  fastapi_app:
+    image: python:3.8-alpine
+    container_name: fastapi_o_grande
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    command: sh -cd
+            "
+            cd /async &&
+            python3 -m pip install -r requirements.txt &&
+            python3 async/app.py
+            "
+
 
 volumes:
   postgres_data:
