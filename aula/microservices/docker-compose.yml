@@ -1,0 +1,33 @@
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  service01:
+    build:
+      context: ./Service01
+    ports:
+      - "${SERVICE01_HOST_PORT}:${SERVICE_01_PORT}"
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3.12.14-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+
+  service02:
+    build:
+      context: ./Service02
+    ports:
+      - "${SERVICE02_HOST_PORT}:${SERVICE_02_PORT}"
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
