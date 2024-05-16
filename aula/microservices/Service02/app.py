@@ -3,8 +3,15 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from datetime import datetime
+import threading
 import pika
 import os
+
+# Ajuste para tentar reconectar ao RabbitMQ
+from pika.connection import Parameters
+
+Parameters.DEFAULT_CONNECTION_ATTEMPTS = 10
+
 
 app = FastAPI()
 banco_em_memoria = []
@@ -13,6 +20,12 @@ banco_em_memoria = []
 class Message(BaseModel):
     date: datetime = None
     msg: str
+
+
+# Função de callback utilizada
+def callback(ch, method, properties, body):
+    print(f" [x] Received {body}")
+    banco_em_memoria.append(body)
 
 
 # Cria uma função que recebe as mensagens para o RabbitMQ
@@ -32,16 +45,11 @@ def receive_message_rabbitmq():
         )
     )
     channel = connection.channel()
-    channel.queue_declare(queue=os.environ["RABBITMQ_QUEUE"], durable=True)
+    channel.queue_declare(queue=os.environ["RABBITMQ_QUEUE"])
     channel.basic_consume(
-        queue=os.environ["RABBITMQ_QUEUE"], on_message_callback=callback, auto_ack=True
+        queue=os.environ["RABBITMQ_QUEUE"], on_message_callback=callback
     )
     channel.start_consuming()
-
-
-def callback(ch, method, properties, body):
-    print(f" [x] Received {body}")
-    banco_em_memoria.append(body)
 
 
 @app.get("/messages")
@@ -56,9 +64,17 @@ if __name__ == "__main__":
 
     print(os.environ)
     if "SERVICE_02_HOST" in os.environ and "SERVICE_02_PORT" in os.environ:
-        receive_message_rabbitmq()
-        uvicorn.run(
-            app, host=os.environ["SERVICE_02_HOST"], port=os.environ["SERVICE_02_PORT"]
-        )
+        try:
+            # Cria uma thread para receber as mensagens do RabbitMQ
+            thread = threading.Thread(target=receive_message_rabbitmq)
+            thread.start()
+            uvicorn.run(
+                app,
+                host=os.environ["SERVICE_02_HOST"],
+                port=os.environ["SERVICE_02_PORT"],
+            )
+        except Exception as e:
+            print(f"Finalizando a execução da thread: {e}")
+            thread.stop()
     else:
         raise Exception("HOST and PORT must be defined in environment variables")

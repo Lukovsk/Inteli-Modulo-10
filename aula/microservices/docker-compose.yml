@@ -13,6 +13,7 @@ services:
     depends_on:
       - rabbitmq
 
+
   rabbitmq:
     image: rabbitmq:3.12.14-management-alpine
     ports:
@@ -21,6 +22,7 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+
 
   service02:
     build:
@@ -31,3 +33,10 @@ services:
       - .env
     depends_on:
       - rabbitmq
+    restart: on-failure
+
+  gateway:
+    build: 
+      context: ./nginx
+    ports:
+      - "8000:80"
