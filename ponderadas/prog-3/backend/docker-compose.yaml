@@ -1,0 +1,51 @@
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  images:
+    build:
+      context: ./image_service
+    ports:
+      - "${IMAGEAPP_HOST_PORT}:${IMAGEAPP_PORT}"
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+
+  user:
+    build:
+      context: ./user_service
+    ports:
+      - "${USERAPP_HOST_PORT}:${USERAPP_PORT}"
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    restart: on-failure
+
+  notification:
+    build:
+      context: ./notify_service
+    ports:
+      - "${NOTIFYAPP_HOST_PORT}:${NOTIFYAPP_PORT}"
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    restart: on-failure
+
+  rabbitmq:
+    image: rabbitmq:3.12.14-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+
+  gateway:
+    build: 
+      context: ./nginx
+    ports:
+      - "8000:80"
