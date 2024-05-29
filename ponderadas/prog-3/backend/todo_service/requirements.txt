@@ -1,0 +1,6 @@
+fastapi==0.68.1
+uvicorn==0.15.0
+aiosqlite==0.20.0
+ormar==0.12.1
+PyJWT==2.8.0
+python-decouple==3.8
