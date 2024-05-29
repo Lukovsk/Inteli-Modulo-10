@@ -1,3 +1,6 @@
 fastapi==0.68.1
 uvicorn==0.15.0
-pika==1.2.0
+requests==2.32.2
+aiofiles==23.2.1
+python-multipart==0.0.9
+rembg==2.0.57
