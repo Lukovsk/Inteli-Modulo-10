@@ -3,6 +3,16 @@
 version: '3.8'
 
 services:
+  logs:
+    build:
+      context: ./log_service
+    ports:
+      - "${LOGAPP_HOST_PORT}:${LOGAPP_PORT}"
+    env_file:
+      - .env
+    # depends_on:
+    #   - rabbitmq
+
   images:
     build:
       context: ./image_service
@@ -11,7 +21,8 @@ services:
     env_file:
       - .env
     depends_on:
-      - rabbitmq
+      - logs
+      # - rabbitmq
 
   user:
     build:
@@ -21,7 +32,8 @@ services:
     env_file:
       - .env
     depends_on:
-      - rabbitmq
+      - logs
+      # - rabbitmq
     restart: on-failure
 
   notification:
@@ -32,17 +44,18 @@ services:
     env_file:
       - .env
     depends_on:
-      - rabbitmq
+      - logs
+      # - rabbitmq
     restart: on-failure
 
-  rabbitmq:
-    image: rabbitmq:3.12.14-management-alpine
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+  # rabbitmq:
+  #   image: rabbitmq:3.12.14-management-alpine
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"
+  #   environment:
+  #     - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+  #     - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
 
   gateway:
     build: 
