@@ -2,8 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/api/todo.dart';
+import 'package:frontend/screens/login.dart';
+import 'package:frontend/screens/user.dart';
+import 'package:frontend/widgets/bottom_bar.dart';
 import '../constants/colors.dart';
 import '../model/todo.dart';
+import '../widgets/build_app_bar.dart';
 import '../widgets/todo_item.dart';
 
 class Home extends StatefulWidget {
@@ -18,6 +22,31 @@ class _HomeState extends State<Home> {
   List<ToDo> _foundTodo = [];
   final _todoController = TextEditingController();
 
+  int _currentIndex = 0;
+
+  void _onTap(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+        break;
+      case 1:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => User()),
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -27,10 +56,11 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    const src = 'https://avatars.githubusercontent.com/u/99260684?v=4';
+    const src =
+        'https://tlfrtkzvkxvuczdoozhu.supabase.co/storage/v1/object/public/images/image.jpg';
     return Scaffold(
       backgroundColor: tdBGColor,
-      appBar: _buildAppBar(src),
+      appBar: buildAppBar(src),
       body: Stack(
         children: [
           Container(
@@ -46,6 +76,8 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
+      bottomNavigationBar:
+          CustomBottomNavigationBar(currentIndex: _currentIndex, onTap: _onTap),
     );
   }
 
@@ -247,29 +279,4 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-}
-
-AppBar _buildAppBar(srcImage) {
-  return AppBar(
-      backgroundColor: tdBGColor,
-      elevation: 0,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Icon(
-            Icons.menu,
-            color: tdBlack,
-            size: 30,
-          ),
-          // ignor  e: sized_box_for_whitespace
-          SizedBox(
-            height: 40,
-            width: 40,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.network(srcImage),
-            ),
-          ),
-        ],
-      ));
 }
