@@ -44,11 +44,7 @@ Future<bool> signUp(String name, String email, String password) async {
       },
       body: jsonEncode(data));
 
-  if (response.statusCode == 200) {
-    return true;
-  } else {
-    return false;
-  }
+  return response.statusCode == 200;
 }
 
 void _storeAccessToken(String token, int userId) async {

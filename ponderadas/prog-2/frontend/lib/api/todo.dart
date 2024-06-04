@@ -36,11 +36,8 @@ Future<bool> addTodo(String content) async {
         "content": content,
         "user_id": globals.userId,
       }));
-  if (response.statusCode == 200) {
-    return true;
-  } else {
-    return false;
-  }
+
+  return response.statusCode == 200;
 }
 
 Future<bool> removeTodo(int id) async {
@@ -53,11 +50,7 @@ Future<bool> removeTodo(int id) async {
     },
   );
 
-  if (response.statusCode == 200) {
-    return true;
-  } else {
-    return false;
-  }
+  return response.statusCode == 200;
 }
 
 Future<bool> checkTodo(int id) async {
@@ -69,9 +62,6 @@ Future<bool> checkTodo(int id) async {
       'Authorization': 'Bearer ${globals.accessToken}',
     },
   );
-  if (response.statusCode == 200) {
-    return true;
-  } else {
-    return false;
-  }
+
+  return response.statusCode == 200;
 }

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/api/todo.dart';
+import 'package:frontend/api/image.dart' as ImageService;
 import 'package:frontend/screens/login.dart';
 import 'package:frontend/screens/user.dart';
 import 'package:frontend/widgets/bottom_bar.dart';
@@ -20,6 +21,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<ToDo> todosList = [];
   List<ToDo> _foundTodo = [];
+  String src =
+      "https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/025.png";
   final _todoController = TextEditingController();
 
   int _currentIndex = 0;
@@ -52,12 +55,27 @@ class _HomeState extends State<Home> {
     super.initState();
     fetchTodos();
     _foundTodo = todosList;
+    getImageUrl(context);
+  }
+
+  void getImageUrl(context) async {
+    final imageUrl = await ImageService.getImageUrl();
+
+    if (imageUrl == "") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Falha em carregar o perfil!'),
+        ),
+      );
+    } else {
+      setState(() {
+        src = imageUrl;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    const src =
-        'https://tlfrtkzvkxvuczdoozhu.supabase.co/storage/v1/object/public/images/image.jpg';
     return Scaffold(
       backgroundColor: tdBGColor,
       appBar: buildAppBar(src),

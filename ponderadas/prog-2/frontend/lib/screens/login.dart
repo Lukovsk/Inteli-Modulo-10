@@ -70,7 +70,7 @@ class LoginPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          "Esqueceu a senha?",
+                          "Não tem uma conta?",
                           style: TextStyle(color: tdGrey),
                         ),
                       ],

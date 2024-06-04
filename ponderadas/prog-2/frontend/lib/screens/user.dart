@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/api/image.dart' as ImageService;
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/screens/home.dart';
 import 'package:frontend/widgets/bottom_bar.dart';
@@ -17,7 +18,15 @@ class User extends StatefulWidget {
 }
 
 class _UserState extends State<User> {
+  String src =
+      "https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/025.png";
   int _currentIndex = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    getImageUrl(context);
+  }
 
   void _onTap(int index) {
     setState(() {
@@ -42,10 +51,10 @@ class _UserState extends State<User> {
     }
   }
 
-  Future<File> getImage() async {
-    final ImagePicker _picker = ImagePicker();
+  Future<File> getImageFromGallery() async {
+    final ImagePicker picker = ImagePicker();
 
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
     File file = File(image!.path);
 
@@ -53,13 +62,35 @@ class _UserState extends State<User> {
   }
 
   void onSendNewImage() async {
-    File file = await getImage();
+    File file = await getImageFromGallery();
+
+    if (await ImageService.sendImage(file)) {
+      getImageUrl(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Falha em enviar a imagem")),
+      );
+    }
+  }
+
+  void getImageUrl(context) async {
+    final imageUrl = await ImageService.getImageUrl();
+
+    if (imageUrl == "") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Falha em carregar o perfil!'),
+        ),
+      );
+    } else {
+      setState(() {
+        src = imageUrl;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    const src =
-        'https://tlfrtkzvkxvuczdoozhu.supabase.co/storage/v1/object/public/images/image.jpg';
     return Scaffold(
       appBar: buildAppBar(src),
       body: SafeArea(
