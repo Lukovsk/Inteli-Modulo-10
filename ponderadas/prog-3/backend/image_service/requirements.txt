@@ -5,3 +5,4 @@ aiofiles==23.2.1
 python-multipart==0.0.9
 rembg==2.0.57
 supabase==2.5.0
+python-decouple==3.8
