@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/api/image.dart' as ImageService;
 import 'package:frontend/constants/colors.dart';
@@ -51,6 +52,17 @@ class _UserState extends State<User> {
     }
   }
 
+  Future<void> showNotification(String title, String body) async {
+    await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: 10,
+        channelKey: 'basic_chanel',
+        title: title,
+        body: body,
+      ),
+    );
+  }
+
   Future<File> getImageFromGallery() async {
     final ImagePicker picker = ImagePicker();
 
@@ -62,9 +74,15 @@ class _UserState extends State<User> {
   }
 
   void onSendNewImage() async {
-    File file = await getImageFromGallery();
+    File? file = await getImageFromGallery();
+
+    if (file == null) {
+      return;
+    }
 
     if (await ImageService.sendImage(file)) {
+      showNotification(
+          "Envio de imagem", "Imagem enviada e processada com sucesso");
       getImageUrl(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
