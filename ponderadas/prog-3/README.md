@@ -62,9 +62,7 @@ O microsserviço de logs tem o propósito de registrar os logs das ações de ca
 - [MongoDB](https://www.mongodb.com): Utilizei uma integração com o mongodb para o armazenamento dos logs de forma não relacional e desestruturada, permitindo o armazenamento de logs sem um schema específico. **_ainda não implementado_**
 - Além disso, em todos os outros microsserviços, criei uma classe para efetuar os logs de forma consistente:
 
-<code><pre>
-
-**LoggerClient**:
+<code><pre>**LoggerClient**:
 
 ##### Descrição
 
@@ -128,7 +126,7 @@ Envia uma requisição de ping para verificar a disponibilidade do servidor de l
 
 Verifica se o servidor de logging está acessível e atualiza o estado interno.
 
-</code></code>
+</pre></code>
 
 #### Image service
 
@@ -157,3 +155,9 @@ Os microsserviços de usuário e tarefas são os mesmos descritos na [ponderada 
 ### Aplicativo mobile
 
 O aplicativo mobile foi desenvolvido em [Flutter](https://flutter.dev/). Ainda estou com dificuldade na utilização do Firebase com SDK do flutter atual no meu computador. Ainda assim, o projeto será o mesmo desenvolvido na [ponderada 2](https://github.com/Lukovsk/Inteli-Modulo-10/tree/main/ponderadas/prog-2), com a adição de uma tela de perfil que permitirá a alteração da foto de perfil. Contudo, esse aprimoramento ainda está em desenvolvimento.
+
+## Demonstração
+
+https://github.com/Lukovsk/Inteli-Modulo-10/assets/99260684/4183fe75-b11b-49ca-9844-02e7325bfdd2
+
+
