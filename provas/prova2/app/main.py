@@ -1,4 +1,4 @@
-from fastapi import FastAPI, requests, HTTPException
+from fastapi import FastAPI
 from logs import log_warning, log_info, log_critical, log_debug, log_error
 
 

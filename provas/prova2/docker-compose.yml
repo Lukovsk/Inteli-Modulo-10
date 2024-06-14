@@ -12,6 +12,6 @@ services:
   
   gateway:
     build: 
-      context: ./nginx
+      context: ./gateway
     ports:
       - "8000:80"

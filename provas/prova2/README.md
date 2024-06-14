@@ -15,3 +15,25 @@ O que deve ser desenvolvido:
 5. Criar um arquivo docker-compose que permita executar toda a aplicação (até 2.0 pontos). ✅
 
 6. Implementar os testes da API com Postman (até 1.0 ponto).
+
+
+## Executando a aplicação
+
+### Sem o docker
+
+Como essa aplicação se trata de um backend único, você pode simplesmente executar o arquivo `main.py` no diretório `app\` depois de instalar as dependências dele dentro de um ambiente virtual:
+
+<code><pre>python -m venv venv
+source venv/Scripts/activate
+cd app/
+python -m pip install -r requirements.txt
+python main.py
+</pre></code>
+
+E o servidor estará executando no endereço [http://localhost:8001](http://localhost:8001).
+
+### Usando o docker
+
+Você também, com o Docker instalado, pode executar a aplicação como um todo em um contêiner, basta executar o `docker-compose` com o docker:
+
+<code><pre>docker compose up -d</pre></code>
