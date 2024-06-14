@@ -1,0 +1,17 @@
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./app
+    ports:
+      - "8001:8001"
+    restart: on-failure
+  
+  gateway:
+    build: 
+      context: ./nginx
+    ports:
+      - "8000:80"
