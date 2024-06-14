@@ -14,7 +14,7 @@ O que deve ser desenvolvido:
 
 5. Criar um arquivo docker-compose que permita executar toda a aplicação (até 2.0 pontos). ✅
 
-6. Implementar os testes da API com Postman (até 1.0 ponto).
+6. Implementar os testes da API com Postman (até 1.0 ponto). ✅
 
 
 ## Executando a aplicação
